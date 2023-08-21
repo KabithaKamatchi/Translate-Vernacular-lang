@@ -33,13 +33,18 @@
           <h2>Login</h2><br><br>
                 <div class="Translate">
                   
-    <form>
-      <label for="username">Enter Username:</label><br>
-      <input type="text" id="username" name="username" placeholder="User Name" required style="width: 350px;"><br><br><br>
+    <form action="/login" method="post">
+      <label for="username">Enter Email:</label><br>
+      <input type="text" id="username" name="email" placeholder="User Name" required style="width: 350px;"><br><br><br>
       <label for="password">Enter Password:</label><br>
       <input type="password" id="password" name="password" placeholder="Password" required style="width: 350px;"><br><br><br>
-      <a href="home-translate.html" class="site-btn">Login</a><br><br><br>
-      <span class="register">Don't have an account <a href="register.html">  Register?</a></span>
+      <button type="submit" class="site-btn">Login</button><br><br><br>
+      {% if message  %}
+      <div class="alert alert-secondary" role="alert">
+          <p style="text-align: center;">{{ message }}</p>
+      </div>
+  {% endif %}
+      <span class="register">Don't have an account <a href="/register">  Register?</a></span>
     </form>
 
                 </div>

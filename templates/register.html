@@ -11,17 +11,17 @@
       rel="stylesheet">
 
   <!-- Css Styles -->
-  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-  <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
-  <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
-  <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
-  <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
-  <link rel="stylesheet" href="css/style.css" type="text/css">
+  <link rel="stylesheet" href="static/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="static/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="static/css/elegant-icons.css" type="text/css">
+  <link rel="stylesheet" href="static/css/owl.carousel.min.css" type="text/css">
+  <link rel="stylesheet" href="static/css/magnific-popup.css" type="text/css">
+  <link rel="stylesheet" href="static/css/slicknav.min.css" type="text/css">
+  <link rel="stylesheet" href="static/css/style.css" type="text/css">
 </head>
 <body>
   <!-- Team Section Begin -->
-  <section class="team spad set-bg" data-setbg="img/blog/register.jpg" style="background-image: url(&quot;img/blog/register.jpg&quot;);">
+  <section class="team spad set-bg" data-setbg="static/img/blog/register.jpg" style="background-image: url(&quot;static/img/blog/register.jpg&quot;);">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -32,16 +32,23 @@
         <div class="section-title">
           <h2>Create Account</h2><br><br>
                 <div class="Translate">
-                  <form action="">
+                  <form action="/register" method="post">
                     <label for="text" ><b>Enter Fullname</b></label><br>
-                    <input type="text" placeholder="User Name "><br><br>
+                    <input type="text" name="name" placeholder="User Name "><br><br>
                     <label for="email" ><b>Enter Email id</b></label><br>
-                    <input type="email" placeholder="Email"><br><br>
+                    <input type="email" name="email" placeholder="Email"><br><br>
                     <label for="text" ><b>Enter Password</b></label><br>
-                    <input type="text" placeholder="Password "><br><br>
+                    <input type="text" name="password" placeholder="Password "><br><br>
+                    <label for="text" ><b>Reenter Password</b></label><br>
+                    <input type="text" name="cpassword" placeholder="Password "><br><br>
                     
-                    <a href="Login.html" class="site-btn">Register</a><br><br>
-                    <span class="login">Have an account <a href="login.html">Login?</a></span>
+                    <button type="submit" class="site-btn">Register</button><br><br>
+                    {% if message  %}
+                    <div class="alert alert-secondary" role="alert">
+                        <p style="text-align: center;">{{ message }}</p>
+                    </div>
+                {% endif %}
+                    <span class="login">Have an account <a href="/login">Login?</a></span>
                   </form> 
    
                 </div>
