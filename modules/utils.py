@@ -46,7 +46,8 @@ def text2textTranslation(source,target,text):
     translated_text = output[0]['translation_text']
     return translated_text
 
-def text_audio(translation_text, language , path):
+# path - folder path with a file name 
+def text_audio(translation_text, language,path):
     language_code = {'Bengali': 'bn', 'Gujarati': 'gu', 'Hindi': 'hi', 'Kannada': 'kn', 'Malayalam': 'ml', 'Tamil': 'ta'}
     lan = language_code[language]
     myobj = gTTS(text=translation_text, lang=lan, slow=False)
@@ -54,13 +55,19 @@ def text_audio(translation_text, language , path):
     return path
 
 
-def video_audio(path, filename, folder):
-    videoClip = VideoFileClip(os.path.join(path))
-    aud_filename = filename.split('.')[0] + '.wav'
-    videoClip.audio.write_audiofile(os.path.join(folder, aud_filename))
-    aud_filepath = os.path.join(folder, aud_filename)
-    return aud_filepath
+#path - path with a video filename
+# filename - only the videoname
+# audiofolder - denotes where the audio is stored
 
+def extract_video_audio(path, filename , audiofolder):
+    videoClip = VideoFileClip(path)
+    aud_filename = filename.split('.')[0] + '.wav'
+    videoClip.audio.write_audiofile(os.path.join(audiofolder, aud_filename))
+    aud_filepath = os.path.join(audiofolder, aud_filename)
+    return aud_filepath  # return a audio file path
+
+
+# videopath, audiopath, combinedvideopath - folderpath with a filename
 
 def combine_audio_video(videopath, audiopath, combinedvideopath):
     videoclip = VideoFileClip(videopath)
@@ -69,7 +76,8 @@ def combine_audio_video(videopath, audiopath, combinedvideopath):
     video.write_videofile(combinedvideopath)
 
 
-def get_large_audio_transcription(path):
+# path of the audiofile with filename
+def englishvideo_englishtext(path):
     """
     Splitting the large audio file into chunks
     and apply speech recognition on each of these chunks
