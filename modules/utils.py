@@ -1,5 +1,6 @@
 # libraries for text to audio 
 from gtts import gTTS
+import fasttext
 
 # libraries for extract a audio from video and merge audio to video
 # https://www.codespeedy.com/extract-audio-from-video-using-python/
@@ -16,6 +17,34 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
+
+
+# Text Lang Detection\
+pretrained_lang_model = "lid218e.bin" # Path of model file
+modelTextDetection = fasttext.load_model(pretrained_lang_model)
+
+# Language TRanslation
+
+checkpoint = 'facebook/nllb-200-distilled-600M'
+# checkpoint = ‘facebook/nllb-200–1.3B’
+# checkpoint = ‘facebook/nllb-200–3.3B’
+# checkpoint = ‘facebook/nllb-200-distilled-1.3B’
+
+model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint)
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+
+
+def dectLang(text):
+    predictions = model.predict(text, k=1)
+    input_lang = predictions[0][0].replace('__label__', '')
+    return input_lang
+
+def text2textTranslation(source,target,text):
+    translator = pipeline('translation', model=model, tokenizer=tokenizer, src_lang=source, tgt_lang=target, max_length = 400)
+    output = translator(text)
+    translated_text = output[0]['translation_text']
+    return translated_text
 
 def text_audio(translation_text, language , path):
     language_code = {'Bengali': 'bn', 'Gujarati': 'gu', 'Hindi': 'hi', 'Kannada': 'kn', 'Malayalam': 'ml', 'Tamil': 'ta'}
