@@ -95,6 +95,10 @@ def logout():
 def about():
     return render_template('about.html')
 
-@app.route('/service')
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/services')
 def service():
-    return render_template('audioin.html')
+    return render_template('services.html')
