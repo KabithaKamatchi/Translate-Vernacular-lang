@@ -23,6 +23,12 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 # libraries for extract transcript from youtube link
 from youtube_transcript_api import YouTubeTranscriptApi
 
+# library for transliteration
+from ai4bharat.transliteration import XlitEngine
+
+# load a transliteration models
+english2vernacular = XlitEngine(src_script_type="roman", beam_width=10, rescore=False)
+vernacular2english = XlitEngine(src_script_type="indic", beam_width=10, rescore=False)
 
 # Text Lang Detection
 pretrained_lang_model = "modules/supportFile/lid218e.bin" # Path of model file
@@ -165,7 +171,33 @@ def youtube_translate(url):
         print(e)
         return None
 
+# transliteration 
 
+language = {
+    "Bengali": "bn",
+    "Gujarati": "gu",
+    "Hindi": "hi",
+    "Kannada": "kn",
+    "Malayalam": "ml",
+    "Marathi": "mr",
+    "Nepali": "ne",
+    "Sinhala": "si",
+    "Tamil": "ta",
+    "Telugu": "te",
+    "Urdu": "ur",
+}
+
+# text - english text , lang- transliteration language name
+def englishtovernacular(text,lang):
+  lang_code = language[lang]
+  out = english2vernacular.translit_sentence(text,lang_code = lang_code)
+  return out
+
+# text - vernacular text , lang - vernacular language name
+def vernaculartoenglish(text,lang):
+  lang_code = language[lang]
+  out = vernacular2english.translit_sentence(text,lang_code = lang_code)
+  return out
 
 
 
