@@ -5,6 +5,8 @@ import bcrypt
 
 from app import *
 
+from modules.utils import *
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -106,9 +108,16 @@ def dashboard():
 def service():
     return render_template('services.html')
 
-@app.route('/text')
+@app.route('/text', methods=["POST", "GET"])
 def text():
     if "email" in session:
+        if request.method == "POST":
+            lag = request.form.get("lag")
+            text = request.form.get("text")
+            sourceLang = dectLang(text)
+            translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
+            return render_template('texttotext.html', translatedText=translatedText)
         return render_template('texttotext.html')
+
     else:
         return redirect('/login')
