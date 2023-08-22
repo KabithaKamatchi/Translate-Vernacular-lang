@@ -17,7 +17,11 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 
+# libraries for multilanguage translation
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
+
+# libraries for extract transcript from youtube link
+from youtube_transcript_api import YouTubeTranscriptApi
 
 
 # Text Lang Detection
@@ -125,6 +129,31 @@ def englishvideo_englishtext(path):
                 whole_text += text
     # return the text for all chunks detected
     return whole_text
+
+
+def getVideoId(url):
+    if url.find("watch") != -1:
+        video_id = url.split("=")[1]
+        return video_id
+    else:
+        video_id = url.split("be/")[1]
+        return video_id
+
+# return a text if transcription is available otherwise it return a empty text
+#  if any error occured it return none
+def youtube_translate(url):
+    try:
+        video_id = getVideoId(url)
+        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        result = ""
+        for frame in transcript:
+            result += (frame['text'] +" ") 
+        return result 
+    except Exception as e:
+        print(e)
+        return None
+
+
 
 
 
