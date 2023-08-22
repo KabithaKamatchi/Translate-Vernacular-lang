@@ -2230,7 +2230,6 @@ body {
   gap: 50px;
 }
 .hello{
-  width:500px;
-  height: 350px;
-  border: 0px ;
+ 
+  padding-left: 100px;
 }
