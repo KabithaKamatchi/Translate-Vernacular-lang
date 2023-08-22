@@ -97,8 +97,18 @@ def about():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    if "email" in session:
+        return render_template('dashboard.html')
+    else:
+        return redirect('/login')
 
 @app.route('/services')
 def service():
     return render_template('services.html')
+
+@app.route('/text')
+def text():
+    if "email" in session:
+        return render_template('texttotext.html')
+    else:
+        return redirect('/login')
