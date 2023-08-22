@@ -20,31 +20,35 @@ from pydub.silence import split_on_silence
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
 
-# Text Lang Detection\
-pretrained_lang_model = "lid218e.bin" # Path of model file
-modelTextDetection = fasttext.load_model(pretrained_lang_model)
+# # Text Lang Detection
+# pretrained_lang_model = "modules/supportFile/lid218e.bin" # Path of model file
+# modelTextDetection = fasttext.load_model(pretrained_lang_model)
 
-# Language TRanslation
+# # Language TRanslation
 
-checkpoint = 'facebook/nllb-200-distilled-600M'
-# checkpoint = ‘facebook/nllb-200–1.3B’
-# checkpoint = ‘facebook/nllb-200–3.3B’
-# checkpoint = ‘facebook/nllb-200-distilled-1.3B’
+# checkpoint = 'facebook/nllb-200-distilled-600M'
+# # checkpoint = ‘facebook/nllb-200–1.3B’
+# # checkpoint = ‘facebook/nllb-200–3.3B’
+# # checkpoint = ‘facebook/nllb-200-distilled-1.3B’
 
-model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint)
-tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+# model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint)
+# tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
 
-def dectLang(text):
-    predictions = model.predict(text, k=1)
-    input_lang = predictions[0][0].replace('__label__', '')
-    return input_lang
+# def dectLang(text):
+#     predictions = modelTextDetection.predict(text, k=1)
+#     input_lang = predictions[0][0].replace('__label__', '')
+#     return input_lang
 
-def text2textTranslation(source,target,text):
-    translator = pipeline('translation', model=model, tokenizer=tokenizer, src_lang=source, tgt_lang=target, max_length = 400)
-    output = translator(text)
-    translated_text = output[0]['translation_text']
-    return translated_text
+# def text2textTranslation(source,target,text):
+#     translator = pipeline('translation', model=model, tokenizer=tokenizer, src_lang=source, tgt_lang=target, max_length = 400)
+#     output = translator(text)
+#     translated_text = output[0]['translation_text']
+#     return translated_text
+
+# print(dectLang("صباح الخير، الجو جميل اليوم والسماء صافية."))
+# print(text2textTranslation(source='arb_Arab',target='eng_lat', text="صباح الخير، الجو جميل اليوم والسماء صافية."))
+
 
 # path - folder path with a file name 
 def text_audio(translation_text, language,path):

@@ -4,6 +4,8 @@ from flask import Flask
 import pymongo
 from json import load
 
+# from modules.utils import *
+
 STATIC_FOLDER = sys.path[0] + '/static/'
 TEMPLATES_FOLDER = sys.path[0] + '/templates/'
 
