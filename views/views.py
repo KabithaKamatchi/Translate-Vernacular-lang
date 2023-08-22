@@ -5,11 +5,11 @@ import bcrypt
 
 from app import *
 
-# from modules.utils import *
+from modules.utils import *
 
 @app.route('/')
 def home():
-    return render_template('videoin.html')
+    return render_template('index.html')
 
 #SignUp
 @app.route('/register', methods=["POST", "GET"])
@@ -112,12 +112,41 @@ def service():
 def text():
     if "email" in session:
         if request.method == "POST":
-            lag = request.form.get("lag")
+            # lag = request.form.get("lag")
             text = request.form.get("text")
+            lag= "tam_Taml"
             sourceLang = dectLang(text)
             translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
             return render_template('texttotext.html', translatedText=translatedText)
         return render_template('texttotext.html')
+
+    else:
+        return redirect('/login')
+    
+@app.route('/video', methods=["POST", "GET"])
+def video():
+    if "email" in session:
+        
+        if request.method == "POST":
+            file = request.files['file']
+            if file.filename == '' :
+                flash('No image selected for uploading')
+                return redirect(request.url)   
+    
+            else:
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+                # extract_video_audio
+                # englishaudio_englishtext
+
+                # text_audio
+                # combine_audio_video
+        #     # lag = request.form.get("lag")
+        #     text = request.form.get("text")
+        #     lag= "tam_Taml"
+        #     sourceLang = dectLang(text)
+        #     translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
+        #     return render_template('texttotext.html', translatedText=translatedText)
+        return render_template('videotovideo.html')
 
     else:
         return redirect('/login')

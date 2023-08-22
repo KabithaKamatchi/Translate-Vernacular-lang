@@ -17,8 +17,18 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 
+# libraries for multilanguage translation
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
+# libraries for extract transcript from youtube link
+from youtube_transcript_api import YouTubeTranscriptApi
+
+# library for transliteration
+from ai4bharat.transliteration import XlitEngine
+
+# load a transliteration models
+english2vernacular = XlitEngine(src_script_type="roman", beam_width=10, rescore=False)
+vernacular2english = XlitEngine(src_script_type="indic", beam_width=10, rescore=False)
 
 # Text Lang Detection
 pretrained_lang_model = "modules/supportFile/lid218e.bin" # Path of model file
@@ -54,7 +64,19 @@ def text2textTranslation(source,target,text):
 
 # path - folder path with a file name 
 def text_audio(translation_text, language,path):
-    language_code = {'Bengali': 'bn', 'Gujarati': 'gu', 'Hindi': 'hi', 'Kannada': 'kn', 'Malayalam': 'ml', 'Tamil': 'ta'}
+    language_code = {
+    "Bengali": "bn",
+    "Gujarati": "gu",
+    "Hindi": "hi",
+    "Kannada": "kn",
+    "Malayalam": "ml",
+    "Marathi": "mr",
+    "Urdu": "ur",
+    "Tamil": "ta",
+    "Telugu": "te",
+    "Nepali": "ne",
+    "Sinhala": "si",
+}
     lan = language_code[language]
     myobj = gTTS(text=translation_text, lang=lan, slow=False)
     myobj.save(path)
@@ -83,7 +105,7 @@ def combine_audio_video(videopath, audiopath, combinedvideopath):
 
 
 # path of the audiofile with filename
-def englishvideo_englishtext(path):
+def englishaudio_englishtext(path):
     """
     Splitting the large audio file into chunks
     and apply speech recognition on each of these chunks
@@ -125,6 +147,57 @@ def englishvideo_englishtext(path):
                 whole_text += text
     # return the text for all chunks detected
     return whole_text
+
+
+def getVideoId(url):
+    if url.find("watch") != -1:
+        video_id = url.split("=")[1]
+        return video_id
+    else:
+        video_id = url.split("be/")[1]
+        return video_id
+
+# return a text if transcription is available otherwise it return a empty text
+#  if any error occured it return none
+def youtube_translate(url):
+    try:
+        video_id = getVideoId(url)
+        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        result = ""
+        for frame in transcript:
+            result += (frame['text'] +" ") 
+        return result 
+    except Exception as e:
+        print(e)
+        return None
+
+# transliteration 
+
+language = {
+    "Bengali": "bn",
+    "Gujarati": "gu",
+    "Hindi": "hi",
+    "Kannada": "kn",
+    "Malayalam": "ml",
+    "Marathi": "mr",
+    "Nepali": "ne",
+    "Sinhala": "si",
+    "Tamil": "ta",
+    "Telugu": "te",
+    "Urdu": "ur",
+}
+
+# text - english text , lang- transliteration language name
+def englishtovernacular(text,lang):
+  lang_code = language[lang]
+  out = english2vernacular.translit_sentence(text,lang_code = lang_code)
+  return out
+
+# text - vernacular text , lang - vernacular language name
+def vernaculartoenglish(text,lang):
+  lang_code = language[lang]
+  out = vernacular2english.translit_sentence(text,lang_code = lang_code)
+  return out
 
 
 
