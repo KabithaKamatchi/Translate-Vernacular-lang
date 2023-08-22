@@ -105,7 +105,7 @@ def combine_audio_video(videopath, audiopath, combinedvideopath):
 
 
 # path of the audiofile with filename
-def englishvideo_englishtext(path):
+def englishaudio_englishtext(path):
     """
     Splitting the large audio file into chunks
     and apply speech recognition on each of these chunks

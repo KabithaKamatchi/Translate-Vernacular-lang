@@ -33,10 +33,10 @@
           <div class="video-box">    
                 <div class="Translate">
                   <span><b>Upload Video</b></span><br>
-                  <form action="/action_page.php">
-                    <input type="file" id="myFile" name="filename">
+                  <form action="/video" method="post" enctype="multipart/form-data">
+                    <input type="file" id="myFile" name="file">
 
-                   </form><br><br>
+                   <br><br>
                    
                    <label for="language">Choose a language:</label>
                       <select id="language" name="language">
@@ -47,7 +47,9 @@
                          <option value="ta">தமிழ் (Tamil)</option>
                          <option value="mr">मराठी (Marathi)</option>
                       </select><br><br>
-                      <button>Translate</button>
+                      <button type="submit">Translate</button>
+
+                    </form>
 
                 </div>
                 <div class="Translate">
