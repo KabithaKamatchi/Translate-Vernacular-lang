@@ -58,7 +58,19 @@ def text2textTranslation(source,target,text):
 
 # path - folder path with a file name 
 def text_audio(translation_text, language,path):
-    language_code = {'Bengali': 'bn', 'Gujarati': 'gu', 'Hindi': 'hi', 'Kannada': 'kn', 'Malayalam': 'ml', 'Tamil': 'ta'}
+    language_code = {
+    "Bengali": "bn",
+    "Gujarati": "gu",
+    "Hindi": "hi",
+    "Kannada": "kn",
+    "Malayalam": "ml",
+    "Marathi": "mr",
+    "Urdu": "ur",
+    "Tamil": "ta",
+    "Telugu": "te",
+    "Nepali": "ne",
+    "Sinhala": "si",
+}
     lan = language_code[language]
     myobj = gTTS(text=translation_text, lang=lan, slow=False)
     myobj.save(path)
