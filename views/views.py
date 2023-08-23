@@ -143,44 +143,6 @@ def text():
     else:
         return redirect('/login')
 
-# input - video file and language
-# output - translated audio filepath
-@app.route('/video', methods=["POST", "GET"])
-def video():
-    if "email" in session:
-        
-        if request.method == "POST":
-            file = request.files['file']
-            language = ""
-            if file.filename == '' :
-                flash('No image selected for uploading')
-                return redirect(request.url)   
-    
-            else:
-                audiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'audio')
-                translatedaudiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'translatedaudio')
-                videofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'video')
-                videopath = os.path.join(videofolder, file.filename)
-                translatedaudiopath = os.path.join(translatedaudiofolder, file.filename)
-                combinedvideopath = os.path.join(app.config['UPLOAD_FOLDER'], 'combinedvideo',file.filename)
-                file.save(videopath)
-                audiopath = extract_video_audio(videopath,file.filename,audiofolder)
-                translated_text = englishaudio_englishtext(audiopath,language)
-                text_audio(translated_text,language,translatedaudiopath)
-                combine_audio_video(videopath,translatedaudiopath,combinedvideopath)
-                return combinedvideopath
-        #     # lag = request.form.get("lag")
-        #     text = request.form.get("text")
-        #     lag= "tam_Taml"
-        #     sourceLang = dectLang(text)
-        #     translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
-        #     return render_template('text.html', translatedText=translatedText)
-        return render_template('videotovideo.html')
-
-    else:
-        return redirect('/login')
-
-
 languageCode2Lang = {
   "ben_Beng": "Bengali",
   "guj_Gujr": "Gujarati",
@@ -195,6 +157,43 @@ languageCode2Lang = {
   "urd_Arab": "Urdu",
   "eng_Latn": "English"
 }
+
+# input - video file and language
+# output - translated audio filepath
+@app.route('/video', methods=["POST", "GET"])
+def video():
+    if "email" in session:
+        
+        if request.method == "POST":
+            file = request.files['file']
+            language = request.form['lang']
+
+            if file.filename == '' :
+                flash('No image selected for uploading')
+                return redirect(request.url)   
+    
+            else:
+                audiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'audio')
+                translatedaudiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'translatedaudio')
+                videofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'video')
+                videopath = os.path.join(videofolder, file.filename)
+                translatedaudiopath = os.path.join(translatedaudiofolder, file.filename)
+                combinedvideopath = os.path.join(app.config['UPLOAD_FOLDER'], 'combinedvideo',file.filename)
+                file.save(videopath)
+                audiopath = extract_video_audio(videopath,file.filename,audiofolder)
+                print(audiopath.split('\\')[-1])
+                translated_text = englishaudio_englishtext(audiopath.split('\\')[-1],language)
+                text_audio(translated_text,languageCode2Lang[language],translatedaudiopath)
+                combine_audio_video(videopath,translatedaudiopath,combinedvideopath)
+
+                return render_template('video.html', result=True, translated_text=translated_text, audipPath=audiopath.split('\\')[-1], videoPath=file.filename, common_language = common_language)
+
+        return render_template('video.html', result=False, translated_text='', videoPath='', audipPath = '', common_language = common_language)
+
+    else:
+        return redirect('/login')
+
+
 # input - audio file and language
 # output - translated audio filepath
 @app.route('/audio', methods=["POST", "GET"])
@@ -275,7 +274,7 @@ def youtubevideo():
 
                 return combinedvideopath
 
-        return render_template('videotovideo.html')
+        return render_template('video.html')
 
     else:
         return redirect('/login')

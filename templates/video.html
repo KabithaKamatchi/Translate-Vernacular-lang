@@ -30,52 +30,58 @@
                     <h2>VIDEO TO VIDEO</h2>
                 </div>
         <div class="section-title">
-          <div class="video-box">    
-                <div class="Translate">
-                  <span><b>Upload Video</b></span><br>
-                  <form action="/video" method="post" enctype="multipart/form-data">
-                    <input type="file" id="myFile" name="file">
+          <div class="video-box"> 
+            {% if result %}
+            <div class="Translate">
+              <span><b>Uploaded Video</b></span><br>
+              <video width="320" height="240" controls><source src="/static/uploads/video/{{videoPath}}"></video>
 
-                   <br><br>
-                   
-                   <label for="language">Choose a language:</label>
-                   {% if common_language  %}
-                   <select id="language" name="lag">
-                     {% for key, value in common_language.items() %}
- 
-                       <option value="{{value}}">{{key}}</option>
-                     {% endfor %}
- 
-                   </select><br><br>
-                   {% endif %}
-                      <button type="submit">Translate</button>
+              <!-- <span><b>Translated Video</b></span><br>
+              <video width="320" height="240" controls><source src="/static/uploads/combinedvideo/{{videoPath}}"></video> -->
+            </div>  
+            <div class="Translate">
+              <span><b>Orginal Audio</b></span><br>
+                  <audio controls src="/static/uploads/audio/{{audipPath}}"></audio><br><br>
+                  
+                  <span><b>Translated Audio</b></span><br>
+                  <audio controls src="/static/uploads/translatedaudio/{{videoPath}}"></audio><br><br>
+            </div>  
+            <div class="Translate">
+              
+              <span>Translated Text</span>
+              <textarea type="text" placeholder="Your Transcript" style="height: 220px; width: 350px;">{{translated_text}}</textarea>
+            
+            </div>  
+            {% else %}
+            <div class="Translate">
+              <span><b>Upload Video</b></span><br>
+              <form action="/video" class="form-control" method="post" enctype="multipart/form-data">
+                <input type="file" id="myFile" name="file">
 
-                    </form>
+               <br><br>
+               
+               <label class="form-control" for="language">Choose a language</label>
+               {% if common_language  %}
+               <select class="form-control" id="language" name="lang">
+                 {% for key, value in common_language.items() %}
 
-                </div>
-                <!-- <div class="Translate">
-                  <span><b>Enter Youtube URL</b></span><br>
-                  <input type="text" placeholder="Copy the URL"/>
-                  <br><br>
-                   
-                   <label for="language">Choose a language:</label>
-                      <select id="language" name="language">
-                         <option value="en">English</option>
-                         <option value="hi">हिन्दी (Hindi)</option>
-                         <option value="bn">বাংলা (Bengali)</option>
-                         <option value="te">తెలుగు (Telugu)</option>
-                         <option value="ta">தமிழ் (Tamil)</option>
-                         <option value="mr">मराठी (Marathi)</option>
-                      </select><br><br>
-                      <button>Translate</button>
+                   <option value="{{value}}">{{key}}</option>
+                 {% endfor %}
 
-                </div> -->
+               </select><br><br>
+               {% endif %}
+                  <button class="btn form-control" type="submit">Translate</button>
+
+                </form>
+
+            </div>
+            {% endif %} 
+
+  
             </div> 
           </div> 
-            </div>
         </div>
-        
-        
+      </div>
     </div>
 </section>
 <!-- Team Section End -->
