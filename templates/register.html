@@ -43,16 +43,18 @@
                     <i class="bi bi-lock icon"></i>
                     <i class="bi bi-eye-slash showHidePw"></i>
                 </div>
+                {% if common_language  %}
                 <div style="margin-top: 32px;">
-                  <select name="countries" id="countries" multiple>
+                  <select name="lang" id="countries" multiple>
+  
                     <option value="" selected hidden>Select Your Language</option>
-                    <option value="1">Afghanistan</option>
-                    <option value="2">Australia</option>
-                    <option value="3">Germany</option>
-                    <option value="4">Canada</option>
-                    <option value="5">Russia</option>
+                    {% for key, value in common_language.items() %}
+                    <option value="{{value}}">{{key}}</option>
+                    {% endfor %}
+               
                   </select>
                 </div>
+                {% endif %}
                 <div class="checkbox-text">
                     <div class="checkbox-content">
                         <input type="checkbox" id="termCon">
