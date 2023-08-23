@@ -42,14 +42,15 @@
 
                 <form action="/text" method="post">
                   <label for="language">Choose a language:</label>
+                  {% if common_language  %}
                   <select id="language" name="lag">
-                    <option value="en">English</option>
-                    <option value="hi">हिन्दी (Hindi)</option>
-                    <option value="bn">বাংলা (Bengali)</option>
-                    <option value="te">తెలుగు (Telugu)</option>
-                    <option value="ta">தமிழ் (Tamil)</option>
-                    <option value="mr">मराठी (Marathi)</option>
+                    {% for key, value in common_language.items() %}
+
+                      <option value="{{value}}">{{key}}</option>
+                    {% endfor %}
+
                   </select><br><br>
+                  {% endif %}
 
                   <input type="text" name="text" placeholder="Enter text"
                     style="height: 150px; width: 400px;" /><br><br>

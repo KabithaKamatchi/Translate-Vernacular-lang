@@ -113,13 +113,12 @@ def service():
 def text():
     if "email" in session:
         if request.method == "POST":
-            # lag = request.form.get("lag")
-            text = request.form.get("text")
-            lag= "tam_Taml"
+            lag = request.form.get("lag")
+            text = request.form.get("text") 
             sourceLang = dectLang(text)
             translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
-            return render_template('texttotext.html', translatedText=translatedText)
-        return render_template('texttotext.html')
+            return render_template('texttotext.html', translatedText=translatedText,common_language = common_language)
+        return render_template('texttotext.html',common_language = common_language)
 
     else:
         return redirect('/login')

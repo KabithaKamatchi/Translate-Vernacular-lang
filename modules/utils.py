@@ -62,7 +62,13 @@ common_language = {
     "Sinhala": "sin_Sinh",
     "Tamil": "tam_Taml",
     "Telugu": "tel_Telu",
+<<<<<<< Updated upstream
     "Urdu": "urd_Arab"
+=======
+    "Urdu": "urd_Arab",
+    "English": "eng_Latn"
+
+>>>>>>> Stashed changes
 }
 
 def dectLang(text):
@@ -71,7 +77,7 @@ def dectLang(text):
     return input_lang
 
 def text2textTranslation(source,target,text):
-    translator = pipeline('translation', model=model, tokenizer=tokenizer, src_lang=source, tgt_lang=common_language[target], max_length = 400)
+    translator = pipeline('translation', model=model, tokenizer=tokenizer, src_lang=source, tgt_lang=target, max_length = 400)
     output = translator(text)
     translated_text = output[0]['translation_text']
     print(translated_text)
@@ -95,6 +101,7 @@ def text_audio(translation_text, language,path):
     "Telugu": "te",
     "Nepali": "ne",
     "Sinhala": "si",
+    "English": "en"
 }
     lan = language_code[language]
     myobj = gTTS(text=translation_text, lang=lan, slow=False)
