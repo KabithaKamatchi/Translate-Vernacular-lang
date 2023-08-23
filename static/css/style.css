@@ -148,7 +148,7 @@ ol {
 }
 
 .spad {
-  padding-top: 100px;
+  /* padding-top: 100px; */
   padding-bottom: 100px;
 }
 
@@ -2702,4 +2702,16 @@ input {
 label {
   margin-bottom: 100px;
   display: block;
+}
+
+.dashboard-divs{
+  transition: 1s all;
+}
+
+.dashboard-divs-transliteration{
+  opacity: 1!important;
+}
+
+.dashboard-divs-translation{
+  opacity: 1!important;
 }

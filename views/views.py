@@ -5,11 +5,15 @@ import bcrypt
 
 from app import *
 
-from modules.utils import *
+# from modules.utils import *
+
+@app.route('/test')
+def test():
+    return render_template('dashboard.html')
 
 @app.route('/')
 def home():
-    return render_template('imagetotextin.html')
+    return render_template('index.html')
 
 #SignUp
 @app.route('/register', methods=["POST", "GET"])

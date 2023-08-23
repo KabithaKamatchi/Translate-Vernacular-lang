@@ -23,23 +23,29 @@
 </head>
 <body>
     <!-- Team Section Begin -->
-    <section class="team spad set-bg" data-setbg="static/img/team-bg.jpg" style="background-image: url(&quot;static/img/team-bg.jpg&quot;);">
+    <section class="team spad set-bg" data-setbg="static/img/team-bg2.jpg" style="background-image: url(&quot;static/img/team-bg2.jpg&quot;);">
         <div class="container">
+
+            <div class="text-center">
+                <input type="checkbox" id="animation1">
+                <label for="animation1">
+                    <a id='arrow-btn' class="arrow" onclick='dashboardTransistion()'></a>
+                  
+                </label>
+               </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div id="mySidenav" class="sidenav">
                         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                        <a href="/">Home</a>
-                        <a href="/about">About</a>
-                        <a href="/services">Services</a>
-                        <a href="/game">Games</a>
-                        <a href="/contact">Contact</a>
-                        <li><a href="/logout" class="btn btn-primary p-2">logout</a></li>
-
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About</a>
+                        <a href="services.html">Services</a>
+                        <a href="game.html">Games</a>
+                        <a href="contact.html">Contact</a>
                       </div>
                       
                       
-                      <span style="color: white;  font-size:30px;" onclick="openNav()">&#x2630;</span>
+                      <span style="color: rgb(202, 45, 45);  font-size:30px;" onclick="openNav()">&#x2630;</span>
                       
                       <script>
                       function openNav() {
@@ -51,51 +57,106 @@
                       }
                       </script>
                     <div class="section-title team__title">
-                        <span>Let us explore</span>
-                        <h2>OUR IDEAS</h2>
+                        
+                        <h2 id='page-headning'>TRANSLATION</h2>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6 p-0">
-                    <div class="team__item set-bg" data-setbg="static/img/team/team-1.jpg" style="background-image: url(&quot;static/img/team/team-1.jpg&quot;);">
-                        <div class="team__item__text">
-                            <h3><a href="videoin.html">Video to Video</a></h3>
-                            
+            <div>
+                <div class="row dashboard-divs" id='translation'>
+                    <div class="col-lg-3 col-md-6 col-sm-6 p-0">
+                        <div class="team__item set-bg" data-setbg="static/img/team/team-5.jpg" style="background-image: url(&quot;static/img/team/team-5.jpg&quot;);">
+                            <div class="team__item__text">
+                               <h4><a href="video-lit.html">Video to Video</a></h4>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 p-0">
+                        <div class="team__item team__item--second set-bg" data-setbg="static/img/team/team-6.jpg" style="background-image: url(&quot;static/img/team/team-6.jpg&quot;);">
+                            <div class="team__item__text">
+                                <h4><a href="audio-lit.html">Audio to Text</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 p-0">
+                        <div class="team__item team__item--third set-bg" data-setbg="static/img/team/team-7.jpg" style="background-image: url(&quot;static/img/team/team-7.jpg&quot;);">
+                            <div class="team__item__text">
+                                <h4> <a href="Translit-in.html">Text to Text</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 p-0">
+                        <div class="team__item team__item--four set-bg" data-setbg="static/img/team/team-8.jpg" style="background-image: url(&quot;static/img/team/team-8.jpg&quot;);">
+                            <div class="team__item__text">
+                                <h4><a href="image-lit.html">Image to Text</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 p-0">
+                        <div class="team__btn">
+                            <a href="dictionary.html" class="primary-btn">For Dictionary</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 p-0">
-                    <div class="team__item team__item--second set-bg" data-setbg="static/img/team/team-2.jpg" style="background-image: url(&quot;static/img/team/team-2.jpg&quot;);">
-                        <div class="team__item__text">
-                            <h3><a href="audioin.html">Audio to Text</a></h3>
+    
+                <div class="row dashboard-divs" id='transliteration' style='transform: translateY(250px);'>
+                    <div class="col-lg-3 col-md-6 col-sm-6 p-0">
+                        <div class="team__item set-bg" data-setbg="static/img/team/team-6.jpg" style="background-image: url(&quot;static/img/team/team-5.jpg&quot;);">
+                            <div class="team__item__text">
+                               <h4><a href="video-lit.html">Video to Video</a></h4>
+                                
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 p-0">
-                    <div class="team__item team__item--third set-bg" data-setbg="static/img/team/team-3.jpg" style="background-image: url(&quot;static/img/team/team-3.jpg&quot;);">
-                        <div class="team__item__text">
-                            <h3><a href="translit-in.html">Transliteration</a></h3>
+                    <div class="col-lg-3 col-md-6 col-sm-6 p-0">
+                        <div class="team__item team__item--second set-bg" data-setbg="static/img/team/team-5.jpg" style="background-image: url(&quot;static/img/team/team-6.jpg&quot;);">
+                            <div class="team__item__text">
+                                <h4><a href="audio-lit.html">Audio to Text</a></h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 p-0">
-                    <div class="team__item team__item--four set-bg" data-setbg="static/img/team/team-4.jpg" style="background-image: url(&quot;static/img/team/team-4.jpg&quot;);">
-                        <div class="team__item__text">
-                            <h3><a href="imagetotextin.html">Image to Text</a></h3>
+                    <div class="col-lg-3 col-md-6 col-sm-6 p-0">
+                        <div class="team__item team__item--third set-bg" data-setbg="static/img/team/team-7.jpg" style="background-image: url(&quot;static/img/team/team-7.jpg&quot;);">
+                            <div class="team__item__text">
+                                <h4> <a href="Translit-in.html">Text to Text</a></h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-12 p-0">
-                    <div class="team__btn">
-                        <a href="dictionary.html" class="primary-btn">For Dictionary</a>
+                    <div class="col-lg-3 col-md-6 col-sm-6 p-0">
+                        <div class="team__item team__item--four set-bg" data-setbg="static/img/team/team-8.jpg" style="background-image: url(&quot;static/img/team/team-8.jpg&quot;);">
+                            <div class="team__item__text">
+                                <h4><a href="image-lit.html">Image to Text</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 p-0">
+                        <div class="team__btn">
+                            <a href="dictionary.html" class="primary-btn">For Dictionary</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
+            
     </section>
     <!-- Team Section End -->
 
     
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    function dashboardTransistion(){
+        console.log(document.getElementById('page-headning').innerHTML)
+        if(document.getElementById('page-headning').innerHTML == 'TRANSLATION'){
+            document.getElementById('page-headning').innerHTML = 'TRANSLITERATION'
+            document.getElementById('transliteration').style.transform = "translateY(-380px)";
+            document.getElementById('translation').style.transform = "translateX(-1280px)";
+        }else{
+            document.getElementById('page-headning').innerHTML = 'TRANSLATION'
+            document.getElementById('transliteration').style.transform = "translateY(250px)";
+            document.getElementById('translation').style.transform = "translateX(0px)";
+        }
+    }
+</script>
 </html>
