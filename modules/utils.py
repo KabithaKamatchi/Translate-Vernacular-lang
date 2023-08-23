@@ -1,6 +1,7 @@
 # libraries for text to audio 
 from gtts import gTTS
 import fasttext
+import pytube
 
 # libraries for extract a audio from video and merge audio to video
 # https://www.codespeedy.com/extract-audio-from-video-using-python/
@@ -44,6 +45,26 @@ checkpoint = 'facebook/nllb-200-distilled-600M'
 model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint)
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
+captioner = pipeline("image-to-text",model="Salesforce/blip-image-captioning-base")
+
+def imageCaptioning(path):
+    result = captioner(path)
+    return result
+
+common_language = {
+    "Bengali": "ben_Beng",
+    "Gujarati": "guj_Gujr",
+    "Hindi": "hin_Deva",
+    "Kannada": "kan_Knda",
+    "Malayalam": "mal_Mlym",
+    "Marathi": "mar_Deva",
+    "Nepali": "npi_Deva",
+    "Sinhala": "sin_Sinh",
+    "Tamil": "tam_Taml",
+    "Telugu": "tel_Telu",
+    "Urdu": "urd_Arab",
+    "English": "eng_Latn"
+}
 
 def dectLang(text):
     predictions = modelTextDetection.predict(text, k=1)
@@ -54,7 +75,6 @@ def text2textTranslation(source,target,text):
     translator = pipeline('translation', model=model, tokenizer=tokenizer, src_lang=source, tgt_lang=target, max_length = 400)
     output = translator(text)
     translated_text = output[0]['translation_text']
-
     print(translated_text)
     return translated_text
 
@@ -62,7 +82,7 @@ def text2textTranslation(source,target,text):
 # print(text2textTranslation(source='arb_Arab',target='eng_lat', text="صباح الخير، الجو جميل اليوم والسماء صافية."))
 
 
-# path - folder path with a file name 
+# path - folder path with a file name
 def text_audio(translation_text, language,path):
     language_code = {
     "Bengali": "bn",
@@ -76,6 +96,7 @@ def text_audio(translation_text, language,path):
     "Telugu": "te",
     "Nepali": "ne",
     "Sinhala": "si",
+    "English": "en"
 }
     lan = language_code[language]
     myobj = gTTS(text=translation_text, lang=lan, slow=False)
@@ -102,10 +123,11 @@ def combine_audio_video(videopath, audiopath, combinedvideopath):
     audioclip = AudioFileClip(audiopath)
     video = videoclip.set_audio(audioclip)
     video.write_videofile(combinedvideopath)
+    return combinedvideopath
 
 
 # path of the audiofile with filename
-def englishaudio_englishtext(path):
+def englishaudio_englishtext(path,target):
     """
     Splitting the large audio file into chunks
     and apply speech recognition on each of these chunks
@@ -139,12 +161,12 @@ def englishaudio_englishtext(path):
             # try converting it to text
             try:
                 text = r.recognize_google(audio_listened)
+                source = dectLang(text)
             except sr.UnknownValueError as e:
                 print("Error:", str(e))
             else:
                 text = f"{text.capitalize()}. "
-                print(chunk_filename, ":", text)
-                whole_text += text
+                whole_text += text2textTranslation(source,target,text)
     # return the text for all chunks detected
     return whole_text
 
@@ -159,14 +181,15 @@ def getVideoId(url):
 
 # return a text if transcription is available otherwise it return a empty text
 #  if any error occured it return none
-def youtube_translate(url):
+def youtube_translate(url,target):
     try:
         video_id = getVideoId(url)
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         result = ""
+        source = dectLang(transcript[0]["text"])
         for frame in transcript:
-            result += (frame['text'] +" ") 
-        return result 
+            result += (text2textTranslation(source, target, frame['text']) +" ")
+        return result
     except Exception as e:
         print(e)
         return None
@@ -200,7 +223,22 @@ def vernaculartoenglish(text,lang):
   return out
 
 
-
+def download_youtube_video(url, output_path='.'):
+    try:
+        # Create a YouTube object for the video URL
+        yt = pytube.YouTube(url)
+        
+        # Get the highest resolution stream (You can choose different streams as per your requirements)
+        stream = yt.streams.get_highest_resolution()
+        
+        # Download the video to the specified output path
+        filename = stream.download(output_path=output_path)
+        
+        return os.path.basename(filename)
+        
+    except Exception as e:
+        print("An error occurred:", str(e))
+        return None
 
 
 

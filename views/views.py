@@ -9,7 +9,7 @@ from modules.utils import *
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('imagetotextin.html')
 
 #SignUp
 @app.route('/register', methods=["POST", "GET"])
@@ -21,7 +21,8 @@ def signup():
     if request.method == "POST":
         user = request.form.get("name")
         email = request.form.get("email")
-        
+        lang = request.form.getlist("lang")
+        lang.pop(0)
         password1 = request.form.get("password")
         password2 = request.form.get("cpassword")
 
@@ -42,7 +43,7 @@ def signup():
 
         else:
             hashed = bcrypt.hashpw(password2.encode('utf-8'), bcrypt.gensalt())
-            user_input = {'name': user, 'email': email, 'password': hashed, 'key': user_key}
+            user_input = {'name': user, 'email': email, 'password': hashed, 'key': user_key, 'lang': lang}
             db.user.insert_one(user_input)
             
             user_data = db.user.find_one({"email": email})
@@ -50,7 +51,7 @@ def signup():
    
             return redirect('/dashboard')
 
-    return render_template('register.html')
+    return render_template('register.html',common_language = common_language)
 
 #Login
 @app.route('/login', methods=["POST", "GET"])
@@ -112,34 +113,113 @@ def service():
 def text():
     if "email" in session:
         if request.method == "POST":
-            # lag = request.form.get("lag")
-            text = request.form.get("text")
-            lag= "tam_Taml"
+            lag = request.form.get("lag")
+            text = request.form.get("text") 
             sourceLang = dectLang(text)
             translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
-            return render_template('texttotext.html', translatedText=translatedText)
-        return render_template('texttotext.html')
+            return render_template('texttotext.html', translatedText=translatedText,common_language = common_language)
+        return render_template('texttotext.html',common_language = common_language)
 
     else:
         return redirect('/login')
-    
+
+# input - video file and language
+# output - translated audio filepath
 @app.route('/video', methods=["POST", "GET"])
 def video():
     if "email" in session:
         
         if request.method == "POST":
             file = request.files['file']
+            language = ""
             if file.filename == '' :
                 flash('No image selected for uploading')
                 return redirect(request.url)   
     
             else:
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-                # extract_video_audio
-                # englishaudio_englishtext
+                audiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'audio')
+                translatedaudiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'translatedaudio')
+                videofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'video')
+                videopath = os.path.join(videofolder, file.filename)
+                translatedaudiopath = os.path.join(translatedaudiofolder, file.filename)
+                combinedvideopath = os.path.join(app.config['UPLOAD_FOLDER'], 'combinedvideo',file.filename)
+                file.save(videopath)
+                audiopath = extract_video_audio(videopath,file.filename,audiofolder)
+                translated_text = englishaudio_englishtext(audiopath,language)
+                text_audio(translated_text,language,translatedaudiopath)
+                combine_audio_video(videopath,translatedaudiopath,combinedvideopath)
+                return combinedvideopath
+        #     # lag = request.form.get("lag")
+        #     text = request.form.get("text")
+        #     lag= "tam_Taml"
+        #     sourceLang = dectLang(text)
+        #     translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
+        #     return render_template('texttotext.html', translatedText=translatedText)
+        return render_template('videotovideo.html')
 
-                # text_audio
-                # combine_audio_video
+    else:
+        return redirect('/login')
+
+
+# input - audio file and language
+# output - translated audio filepath
+@app.route('/audio', methods=["POST", "GET"])
+def audio():
+    if "email" in session:
+        
+        if request.method == "POST":
+            file = request.files['file']
+            language = ""
+            if file.filename == '' :
+                flash('No image selected for uploading')
+                return redirect(request.url)   
+    
+            else:
+                audiopath = os.path.join(app.config['UPLOAD_FOLDER'], 'audio',file.filename)
+                translatedaudiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'translatedaudio')
+                translatedaudiopath = os.path.join(translatedaudiofolder, file.filename)
+                file.save(audiopath)
+                translated_text = englishaudio_englishtext(audiopath,language)
+                text_audio(translated_text,language,translatedaudiopath)
+                return translatedaudiopath
+        #     # lag = request.form.get("lag")
+        #     text = request.form.get("text")
+        #     lag= "tam_Taml"
+        #     sourceLang = dectLang(text)
+        #     translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
+        #     return render_template('texttotext.html', translatedText=translatedText)
+        return render_template('videotovideo.html')
+
+    else:
+        return redirect('/login')
+    
+
+# input - url and language
+# output - translated video filepath
+@app.route('/youtubevideo', methods=["POST", "GET"])
+def youtubevideo():
+    if "email" in session:
+        
+        if request.method == "POST":
+            url = ""
+            language = ""
+            if url == '' :
+                flash('No url is selected for translating')
+                return redirect(request.url)   
+    
+            else:
+                videofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'video')
+                filename = download_youtube_video(url,videofolder)
+                audiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'audio')
+                translatedaudiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'translatedaudio')
+                videopath = os.path.join(videofolder, filename)
+                translatedaudiopath = os.path.join(translatedaudiofolder, filename)
+                combinedvideopath = os.path.join(app.config['UPLOAD_FOLDER'], 'combinedvideo', filename)
+                audiopath = extract_video_audio(videopath,filename,audiofolder)
+                translated_text = englishaudio_englishtext(audiopath,language)
+                text_audio(translated_text,language,translatedaudiopath)
+                combine_audio_video(videopath,translatedaudiopath,combinedvideopath)
+                return combinedvideopath
         #     # lag = request.form.get("lag")
         #     text = request.form.get("text")
         #     lag= "tam_Taml"
