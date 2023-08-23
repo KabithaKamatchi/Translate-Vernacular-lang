@@ -44,6 +44,11 @@ checkpoint = 'facebook/nllb-200-distilled-600M'
 model = AutoModelForSeq2SeqLM.from_pretrained(checkpoint)
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
+captioner = pipeline("image-to-text",model="Salesforce/blip-image-captioning-base")
+
+def imageCaptioning(path):
+    result = captioner(path)
+    return result
 
 def dectLang(text):
     predictions = modelTextDetection.predict(text, k=1)

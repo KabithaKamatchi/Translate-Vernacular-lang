@@ -9,7 +9,7 @@ from modules.utils import *
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('imagetotextin.html')
 
 #SignUp
 @app.route('/register', methods=["POST", "GET"])
