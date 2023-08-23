@@ -53,12 +53,25 @@
                     </form>
                 </div>
                 <div class="Translate">
+                  <span><b>Orginal Audio</b></span><br>
+                  {% if result  %}
+                  <audio controls src="/static/uploads/audio/{{translatedaudiopath}}"></audio><br><br>
+                  
                   <span><b>Translated Audio</b></span><br>
-                  <audio controls></audio><br><br>
-                  <button>Download</button><br><br>
-                  <span>Translated Text</span>
-                  <input type="text" placeholder="Your Transcript" style="height: 100px; width: 350px;"/>
+                  <audio controls src="/static/uploads/translatedaudio/{{translatedaudiopath}}"></audio><br><br>
+
+                  
+                   {% endif %}
+                  
                 </div>
+                {% if result  %}
+                <div class="Translate">
+                  <span>Translated Text</span>
+                  <textarea type="text" placeholder="Your Transcript" style="height: 220px; width: 350px;">{{translated_text}}</textarea>
+                </div>
+                  
+                   {% endif %}
+                  
                 
           </div>   
           </div> 

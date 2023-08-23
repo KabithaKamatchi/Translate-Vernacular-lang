@@ -6,7 +6,7 @@ import bcrypt
 from app import *
 
 from modules.utils import *
-from modules.preprocessor import *
+from shutil import copyfile
 
 common_language = {
     "Bengali": "ben_Beng",
@@ -25,7 +25,7 @@ common_language = {
 
 @app.route('/test')
 def test():
-    return render_template('dashboard.html')
+    return render_template('imagetotextin.html')
 
 @app.route('/')
 def home():
@@ -181,6 +181,20 @@ def video():
         return redirect('/login')
 
 
+languageCode2Lang = {
+  "ben_Beng": "Bengali",
+  "guj_Gujr": "Gujarati",
+  "hin_Deva": "Hindi",
+  "kan_Knda": "Kannada",
+  "mal_Mlym": "Malayalam",
+  "mar_Deva": "Marathi",
+  "npi_Deva": "Nepali",
+  "sin_Sinh": "Sinhala",
+  "tam_Taml": "Tamil",
+  "tel_Telu": "Telugu",
+  "urd_Arab": "Urdu",
+  "eng_Latn": "English"
+}
 # input - audio file and language
 # output - translated audio filepath
 @app.route('/audio', methods=["POST", "GET"])
@@ -189,7 +203,7 @@ def audio():
         
         if request.method == "POST":
             file = request.files['file']
-            language = ""
+            language = request.form['lang']
             if file.filename == '' :
                 flash('No image selected for uploading')
                 return redirect(request.url)   
@@ -200,15 +214,34 @@ def audio():
                 translatedaudiopath = os.path.join(translatedaudiofolder, file.filename)
                 file.save(audiopath)
                 translated_text = englishaudio_englishtext(file.filename,language)
-                text_audio(translated_text,language,translatedaudiopath)
-                return translatedaudiopath
-        #     # lag = request.form.get("lag")
-        #     text = request.form.get("text")
-        #     lag= "tam_Taml"
-        #     sourceLang = dectLang(text)
-        #     translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
-        #     return render_template('text.html', translatedText=translatedText)
-        return render_template('videotovideo.html')
+                text_audio(translated_text,languageCode2Lang[language],translatedaudiopath)
+
+                return render_template('audio.html',common_language = common_language,result=True,  translated_text=translated_text,translatedaudiopath=file.filename)
+            
+
+        return render_template('audio.html',common_language = common_language,result=False,translated_text='',translatedaudiopath='')
+
+    else:
+        return redirect('/login')
+    
+@app.route('/image', methods=["POST", "GET"])
+def image():
+    if "email" in session:
+        if request.method == "POST":
+            file = request.files['file']
+            language = request.form['lang']
+            if file.filename == '' :
+                flash('No image selected for uploading')
+                return redirect(request.url)   
+            else:
+                imagepath = os.path.join(app.config['UPLOAD_FOLDER'], 'image', file.filename)
+                file.save(imagepath)
+                captionText, translated = englishimage_englishtext(file.filename,language)
+
+                return render_template('imagetotextin.html', imagePath=file.filename, common_language = common_language, description=captionText, translated=translated)
+
+
+        return render_template('imagetotextin.html', imagePath=False, common_language = common_language, translated=False, description=False)
 
     else:
         return redirect('/login')
@@ -237,15 +270,11 @@ def youtubevideo():
                 combinedvideopath = os.path.join(app.config['UPLOAD_FOLDER'], 'combinedvideo', filename)
                 audiopath = extract_video_audio(videopath,filename,audiofolder)
                 translated_text = englishaudio_englishtext(audiopath,language)
-                text_audio(translated_text,language,translatedaudiopath)
+                text_audio(translated_text,languageCode2Lang[language],translatedaudiopath)
                 combine_audio_video(videopath,translatedaudiopath,combinedvideopath)
+
                 return combinedvideopath
-        #     # lag = request.form.get("lag")
-        #     text = request.form.get("text")
-        #     lag= "tam_Taml"
-        #     sourceLang = dectLang(text)
-        #     translatedText = text2textTranslation(source=sourceLang, target=lag, text=text)
-        #     return render_template('text.html', translatedText=translatedText)
+
         return render_template('videotovideo.html')
 
     else:

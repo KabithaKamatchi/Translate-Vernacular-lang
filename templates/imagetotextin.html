@@ -32,29 +32,45 @@
                 </div>
         <div class="section-title">
             <div class="video-box">
+              {% if imagePath %}
+              <div class="Translate">
+                <span><b>Image</b></span><br>
+                <img src="/static/uploads/image/{{imagePath}}" alt="{{imagePath}}">
+                <br><br>
+              </div>
+              {% else %}
+              <div class="Translate">
+                <span><b>Upload Image</b></span><br>
+                <form action="/image" method="post" enctype="multipart/form-data">
+                  <input type="file" id="myFile" name="file">
+                    <label for="language">Choose a language:</label>
+                    {% if common_language  %}
+                    <select id="language" name="lang">
+                      {% for key, value in common_language.items() %}
+  
+                        <option value="{{value}}">{{key}}</option>
+                      {% endfor %}
+  
+                    </select><br><br>
+                    {% endif %}
+                      <button type="submit">Analyse</button>
+                 </form><br><br>
+              </div>
+              {% endif %}
+
+                
                 <div class="Translate">
-                  <span><b>Upload Image</b></span><br>
-                  <form action="/action_page.php">
-                    <input type="file" id="myFile" name="filename">
-
-                   </form><br><br>
-                   
-                   <label for="language">Choose a language:</label>
-                      <select id="language" name="language">
-                         <option value="en">English</option>
-                         <option value="hi">हिन्दी (Hindi)</option>
-                         <option value="bn">বাংলা (Bengali)</option>
-                         <option value="te">తెలుగు (Telugu)</option>
-                         <option value="ta">தமிழ் (Tamil)</option>
-                         <option value="mr">मराठी (Marathi)</option>
-                      </select><br><br>
-                      <button>Translate</button>
-
+                     <span><b>Image Description</b></span><br><br>
+                     {% if translated  %}
+                        <textarea type="text" value={{description}} style="height: 100px; width: 400px;">{{description}}</textarea>
+                      {% endif %}
                 </div>
                 <div class="Translate">
-                     <span><b>Your Translated text</b></span><br><br>
-<                     <input type="text" placeholder="Your text" style="height: 200px; width: 400px;"/>
-                </div>
+                  <span><b>Translated Description</b></span><br><br>
+                  {% if translated  %}
+                     <textarea type="text" value={{translated}} style="height: 100px; width: 400px;">{{translated}}</textarea>
+                   {% endif %}   
+             </div>
                 
             </div> 
           </div> 
