@@ -62,13 +62,8 @@ common_language = {
     "Sinhala": "sin_Sinh",
     "Tamil": "tam_Taml",
     "Telugu": "tel_Telu",
-<<<<<<< Updated upstream
-    "Urdu": "urd_Arab"
-=======
     "Urdu": "urd_Arab",
     "English": "eng_Latn"
-
->>>>>>> Stashed changes
 }
 
 def dectLang(text):
