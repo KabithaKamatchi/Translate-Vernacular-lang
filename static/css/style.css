@@ -148,7 +148,7 @@ ol {
 }
 
 .spad {
-  /* padding-top: 100px; */
+  padding-top: 100px;
   padding-bottom: 100px;
 }
 
@@ -2693,10 +2693,6 @@ hr {
   height: 1px;
   width: 20%;
   background: #fff;
-}
-
-input {
-  display: none;
 }
 
 label {

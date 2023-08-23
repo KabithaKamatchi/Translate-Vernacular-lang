@@ -34,22 +34,23 @@
           <div class="video-box">   
                 <div class="Translate">
                   <span><b>Upload Audio File</b></span><br>
-                  <form action="/action_page.php">
-                    <input type="file" id="myFile" name="filename">
-
-                   </form><br><br>
+                  <form action="/audio" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" class="" id="inputGroupFile01">
+                    
                    
                    <label for="language">Choose a language:</label>
-                      <select id="language" name="language">
-                         <option value="en">English</option>
-                         <option value="hi">हिन्दी (Hindi)</option>
-                         <option value="bn">বাংলা (Bengali)</option>
-                         <option value="te">తెలుగు (Telugu)</option>
-                         <option value="ta">தமிழ் (Tamil)</option>
-                         <option value="mr">मराठी (Marathi)</option>
-                      </select><br><br>
+                   {% if common_language  %}
+                   <select id="language" name="lang">
+                     {% for key, value in common_language.items() %}
+ 
+                       <option value="{{value}}">{{key}}</option>
+                     {% endfor %}
+ 
+                   </select><br><br>
+                   {% endif %}
+                   <!-- <input type="file" id="myFile" name="filename"/> -->
                       <button>Translate</button>
-
+                    </form>
                 </div>
                 <div class="Translate">
                   <span><b>Translated Audio</b></span><br>
