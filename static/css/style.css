@@ -148,7 +148,7 @@ ol {
 }
 
 .spad {
-  padding-top: 100px;
+  padding-top: 50px;
   padding-bottom: 100px;
 }
 
@@ -2696,7 +2696,6 @@ hr {
 }
 
 label {
-  margin-bottom: 100px;
   display: block;
 }
 

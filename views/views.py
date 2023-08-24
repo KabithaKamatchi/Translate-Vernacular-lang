@@ -278,3 +278,130 @@ def youtubevideo():
 
     else:
         return redirect('/login')
+    
+
+transliterationlanguage = {
+    "Bengali": "bn",
+    "Gujarati": "gu",
+    "Hindi": "hi",
+    "Kannada": "kn",
+    "Malayalam": "ml",
+    "Marathi": "mr",
+    "Nepali": "ne",
+    "Sinhala": "si",
+    "Tamil": "ta",
+    "Telugu": "te",
+    "Urdu": "ur",
+}
+
+transliterationcodetolanguage = {
+    "bn": "Bengali",
+    "gu": "Gujarati",
+    "hi": "Hindi",
+    "kn": "Kannada",
+    "ml": "Malayalam",
+    "mr": "Marathi",
+    "ne": "Nepali",
+    "si": "Sinhala",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "ur": "Urdu",
+}
+
+@app.route('/texttran', methods=["POST", "GET"])
+def texttran():
+    if "email" in session:
+        if request.method == "POST":
+            lag = request.form.get("lag")
+            text = request.form.get("text") 
+            translatedText = englishtovernacular(lang=lag, text=text)
+            return render_template('texttran.html', translatedText=translatedText,common_language = transliterationlanguage)
+        return render_template('texttran.html',common_language = transliterationlanguage)
+
+    else:
+        return redirect('/login')
+
+
+# input - video file and language
+# output - translated audio filepath
+@app.route('/videotran', methods=["POST", "GET"])
+def videotran():
+    if "email" in session:
+        
+        if request.method == "POST":
+            file = request.files['file']
+            language = request.form['lang']
+
+            if file.filename == '' :
+                flash('No image selected for uploading')
+                return redirect(request.url)   
+    
+            else:
+                audiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'audio')
+                translatedaudiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'translatedaudio')
+                videofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'video')
+                videopath = os.path.join(videofolder, file.filename)
+                translatedaudiopath = os.path.join(translatedaudiofolder, file.filename)
+                combinedvideopath = os.path.join(app.config['UPLOAD_FOLDER'], 'combinedvideo',file.filename)
+                file.save(videopath)
+                audiopath = extract_video_audio(videopath,file.filename,audiofolder)
+                print(audiopath.split('\\')[-1])
+                translated_text = englishaudio_trans(audiopath.split('\\')[-1],language)
+                text_audio(translated_text,transliterationcodetolanguage[language],translatedaudiopath)
+                combine_audio_video(videopath,translatedaudiopath,combinedvideopath)
+
+                return render_template('videotran.html', result=True, translated_text=translated_text, audipPath=audiopath.split('\\')[-1], videoPath=file.filename, common_language = transliterationlanguage)
+
+        return render_template('videotran.html', result=False, translated_text='', videoPath='', audipPath = '', common_language = transliterationlanguage)
+
+    else:
+        return redirect('/login')
+    
+@app.route('/audiotran', methods=["POST", "GET"])
+def audiotran():
+    if "email" in session:
+        
+        if request.method == "POST":
+            file = request.files['file']
+            language = request.form['lang']
+            if file.filename == '' :
+                flash('No image selected for uploading')
+                return redirect(request.url)   
+    
+            else:
+                audiopath = os.path.join(app.config['UPLOAD_FOLDER'], 'audio',file.filename)
+                translatedaudiofolder = os.path.join(app.config['UPLOAD_FOLDER'], 'translatedaudio')
+                translatedaudiopath = os.path.join(translatedaudiofolder, file.filename)
+                file.save(audiopath)
+                translated_text = englishaudio_trans(file.filename,language)
+                text_audio(translated_text,transliterationcodetolanguage[language],translatedaudiopath)
+
+                return render_template('audiotran.html',common_language = transliterationlanguage,result=True,  translated_text=translated_text,translatedaudiopath=file.filename)
+            
+
+        return render_template('audiotran.html',common_language = transliterationlanguage,result=False,translated_text='',translatedaudiopath='')
+
+    else:
+        return redirect('/login')
+    
+@app.route('/imagetran', methods=["POST", "GET"])
+def imagetran():
+    if "email" in session:
+        if request.method == "POST":
+            file = request.files['file']
+            language = request.form['lang']
+            if file.filename == '' :
+                flash('No image selected for uploading')
+                return redirect(request.url)   
+            else:
+                imagepath = os.path.join(app.config['UPLOAD_FOLDER'], 'image', file.filename)
+                file.save(imagepath)
+                captionText, translated = englishimage_englishtext_tran(file.filename,language)
+
+                return render_template('imagetran.html', imagePath=file.filename, common_language = transliterationlanguage, description=captionText, translated=translated)
+
+
+        return render_template('imagetran.html', imagePath=False, common_language = transliterationlanguage, translated=False, description=False)
+
+    else:
+        return redirect('/login')

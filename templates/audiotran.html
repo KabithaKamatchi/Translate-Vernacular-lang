@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagetotext</title>
+    <title>Audiototext</title>
 
     <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
 <body>
 
     <!-- Team Section Begin -->
-  <section class="team spad set-bg" data-setbg="static/img/blog/blog-3.jpg" style="background-image: url(&quot;static/img/blog/blog-3.jpg&quot;);">
+  <section class="team spad set-bg" data-setbg="static/img/blog/blog-5.jpg" style="background-image: url(&quot;static/img/blog/blog-5.jpg&quot;);">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -54,56 +54,56 @@
               </script>
             <div class="section-title team__title">
                 
-                <h2 id='page-headning'>VIDEO TRANSLITERATION</h2>
+                <h2 id='page-headning'>AUDIO TRANSLITERATION</h2>
             </div>
         </div>
     </div>
         <div class="row">
             <div class="col-lg-12">
-                
         <div class="section-title">
-            <div class="video-box">
-              {% if imagePath %}
-              <div class="Translate">
-                <span><b>Image</b></span><br>
-                <img src="/static/uploads/image/{{imagePath}}" alt="{{imagePath}}">
-                <br><br>
-              </div>
-              {% else %}
-              <div class="Translate">
-                <span><b>Upload Image</b></span><br>
-                <form action="/image" method="post" enctype="multipart/form-data">
-                  <input type="file" id="myFile" name="file">
-                    <label for="language">Choose a language:</label>
-                    {% if common_language  %}
-                    <select id="language" class="form-control" name="lang">
-                      {% for key, value in common_language.items() %}
-  
-                        <option value="{{value}}">{{key}}</option>
-                      {% endfor %}
-  
-                    </select><br><br>
-                    {% endif %}
-                      <button class="btn btn-primary" type="submit">Analyse</button>
-                 </form><br><br>
-              </div>
-              {% endif %}
-
-                
+          <div class="video-box">   
                 <div class="Translate">
-                     <span><b>Image Description</b></span><br><br>
-                     {% if translated  %}
-                        <textarea type="text" value={{description}} style="height: 100px; width: 400px;">{{description}}</textarea>
-                      {% endif %}
+                  <span><b>Upload Audio File</b></span><br>
+                  <form action="/audiotran" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" class="" id="inputGroupFile01">
+                    
+                   
+                   <label style="padding-top: 40px;" for="language">Choose a language:</label>
+                   {% if common_language  %}
+                   <select class="form-control" id="language" name="lang">
+                     {% for key, value in common_language.items() %}
+ 
+                       <option value="{{value}}">{{key}}</option>
+                     {% endfor %}
+ 
+                   </select><br><br>
+                   {% endif %}
+                   <!-- <input type="file" id="myFile" name="filename"/> -->
+                   <button class="btn btn-primary" type="submit">Translate</button>
+                    </form>
                 </div>
                 <div class="Translate">
-                  <span><b>Translated Description</b></span><br><br>
-                  {% if translated  %}
-                     <textarea type="text" value={{translated}} style="height: 100px; width: 400px;">{{translated}}</textarea>
-                   {% endif %}   
-             </div>
+                  <span><b>Orginal Audio</b></span><br>
+                  {% if result  %}
+                  <audio controls src="/static/uploads/audio/{{translatedaudiopath}}"></audio><br><br>
+                  
+                  <span><b>Translated Audio</b></span><br>
+                  <audio controls src="/static/uploads/translatedaudio/{{translatedaudiopath}}"></audio><br><br>
+
+                  
+                   {% endif %}
+                  
+                </div>
+                {% if result  %}
+                <div class="Translate">
+                  <span>Translated Text</span>
+                  <textarea type="text" placeholder="Your Transcript" class="form-control" style="height: 220px; width: 350px;">{{translated_text}}</textarea>
+                </div>
+                  
+                   {% endif %}
+                  
                 
-            </div> 
+          </div>   
           </div> 
             </div>
         </div>
